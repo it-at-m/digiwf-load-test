@@ -20,3 +20,19 @@ jobs:
 
           argvs: '--disable-dependabot --disable-secret-scanning --disable-code-scanning'
 
+  build:
+    needs: compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+      - name: Setup NodeJS 14
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Webpack build
+          run: npm run build
