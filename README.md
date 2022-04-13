@@ -78,11 +78,11 @@ npm run build
 ```
 # set required env variables
 export ENGINE="http://localhost:39147"
-export AUTH_URL="https://ssodev.muenchen.de/auth/realms/P82/protocol/openid-connect/token"
+export AUTH_URL="<url to your keycloak>"
 export USERNAME="<your-ssodev-username>"
 export NAME="<your-name>"
 export PASSWORD="<your-password-for-ssodev>"
-export CLIENT_SECRET="0630b79a-19ed-4f98-ac21-533f324e1cad"
+export CLIENT_SECRET="<client-secret>"
 ```
 
 3. Execute the tests
