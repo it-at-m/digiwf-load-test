@@ -1,9 +1,11 @@
 {
-  "name": "typescript",
+  "name": "@muenchen/digiwf-load-test",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "ssh://git@github.com/k6io/example-typescript.git",
-  "author": "Simon Aronsson <simme@k6.io>",
+  "repository": {
+    "url": "https://github.com/it-at-m/digiwf-load-test",
+    "type": "git"
+  },
+  "description": "K6 based load tests for digiwf ",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "7.13.16",
