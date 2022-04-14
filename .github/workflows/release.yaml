@@ -35,6 +35,9 @@ jobs:
       - name: Get package version
         uses: Saionaro/extract-package-version@v1.0.6
 
+      - name: Print version
+        run: echo ${{ steps.extract_version.outputs.version }}
+
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
