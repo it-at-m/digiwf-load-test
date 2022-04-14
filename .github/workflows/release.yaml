@@ -33,14 +33,13 @@ jobs:
           password: ${{ secrets.DOCKERHUB_KEY }}
 
       - name: Get package version
-        uses: Saionaro/extract-package-version@v1.1.1
-
-      - name: Print version
-        run: echo ${{ steps.extract_version.outputs.version }}
+        uses: koj-co/package-version-action@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: itatm/digiwf-load-test:latest,itatm/digiwf-load-test:${{ steps.extract_version.outputs.version }}
+          tags: itatm/digiwf-load-test:latest,itatm/digiwf-load-test:${{ steps.package-version.outputs.package-version }}
