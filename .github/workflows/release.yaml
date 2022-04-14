@@ -36,7 +36,7 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@master
 
       - name: Print version
-          run: echo ${{ steps.package-version.outputs.current-version }}
+        run: echo ${{ steps.package-version.outputs.current-version }}
 
       - name: Get package version
         uses: koj-co/package-version-action@v1.0.1
