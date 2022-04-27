@@ -1,6 +1,6 @@
 {
   "name": "@muenchen/digiwf-load-test",
-  "version": "1.0.0",
+  "version": "0.99.0",
   "repository": {
     "url": "https://github.com/it-at-m/digiwf-load-test",
     "type": "git"
