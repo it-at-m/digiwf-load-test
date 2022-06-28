@@ -1,11 +1,12 @@
 import { check, fail, group } from "k6";
 import http from "k6/http";
 import { HumanTaskDetailTO, HumanTaskTO, UserTO } from "./model";
-import { Trend } from "k6/metrics";
+import { Rate, Trend } from "k6/metrics";
 
 export const BASE_URL = __ENV.ENGINE;
 
 export const TrendRTT = new Trend("RTT");
+export const RateContentOK = new Rate('Content OK');
 
 /**
  * Start a new loadtest-process and assign the first task to the user with the userId
@@ -27,9 +28,10 @@ export function startProcess(variables: object, processKey: string, accessToken:
             }
         };
         const response = http.post(url, JSON.stringify(body), params);
-        check(response, {
+        const success = check(response, {
             "OK": (r) => r.status === 200
         });
+        RateContentOK.add(success);
         TrendRTT.add(response.timings.duration);
     });
 }
@@ -53,6 +55,7 @@ export function getTasks(accessToken: string): HumanTaskTO[] {
             "OK": (r) => r.status === 200,
             "Response Body": (r) => Array.isArray(r.json())
         });
+        RateContentOK.add(success);
         TrendRTT.add(response.timings.duration);
 
         if (!success) {
@@ -82,6 +85,7 @@ export function getTask(id: string, accessToken: string): HumanTaskDetailTO {
             "OK": (r) => r.status === 200,
             "Response Body": (r) => !!(r.json() as HumanTaskDetailTO).variables
         });
+        RateContentOK.add(success);
         TrendRTT.add(response.timings.duration);
 
         if (!success) {
@@ -110,6 +114,7 @@ export function getOpenGroupTasks(accessToken: string): HumanTaskTO[] {
             "OK": (r) => r.status === 200,
             "Response Body": (r) => Array.isArray(r.json())
         });
+        RateContentOK.add(success);
         TrendRTT.add(response.timings.duration);
 
         if (!success) {
@@ -134,9 +139,10 @@ export function assignGroupTask(id: string, accessToken: string) {
             }
         };
         const response = http.post(url, {}, params);
-        check(response, {
+        const success = check(response, {
             "OK": (r) => r.status === 200
         });
+        RateContentOK.add(success);
     });
 }
 
@@ -163,6 +169,7 @@ export function finishTask(id: string, variables: any, accessToken: string) {
         const success = check(response, {
             "OK": (r) => r.status === 200
         });
+        RateContentOK.add(success);
         TrendRTT.add(response.timings.duration);
 
         if (!success) {
@@ -187,10 +194,11 @@ export function getUser(userId: string, accessToken: string): UserTO {
             }
         };
         const response = http.get(url, params);
-        check(response, {
+        const success = check(response, {
             "OK": (r) => r.status === 200,
             "Response Body": (r) => (r.json() as UserTO).lhmObjectId === userId
         });
+        RateContentOK.add(success);
         TrendRTT.add(response.timings.duration);
         return response.json() as UserTO;
     });
@@ -214,10 +222,11 @@ export function findUser(searchString: string, accessToken: string): UserTO[] {
             }
         };
         const response = http.post(url, JSON.stringify(body), params);
-        check(response, {
+        const success = check(response, {
             "OK": (r) => r.status === 200,
             "Response Body": (r) => (r.json() as UserTO[]).length > 0 && Array.isArray(r.json())
         });
+        RateContentOK.add(success);
         TrendRTT.add(response.timings.duration);
         return response.json() as UserTO[];
     });
